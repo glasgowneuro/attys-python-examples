@@ -1,7 +1,12 @@
 #!/usr/bin/python3
 """
-Plots both channels of the Attys in two different windows. Requires pyqtgraph.
+Plots the temperature of a thermocouple connected to Channel 1
+of the Attys. The 2nd Channel is reading the cold junction temperature
+from the internal thermometer. Connect the negative input of channel
+one also to ground so that it's not floating. Wiring: Thermo+ -> Ch1+,
+Thermo- -> Ch1-,GND.
 
+Requires pyqtgraph.
 """
 
 import threading
