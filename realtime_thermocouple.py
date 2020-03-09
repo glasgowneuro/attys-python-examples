@@ -46,6 +46,7 @@ class QtTemperaturePlot:
         self.plt.setLabel('left',u"T/\u00b0C")
         self.plt.setLabel('bottom',u"t/sec")
         self.curve = self.plt.plot()
+        self.curve.setPen(pg.mkPen(color='#00FF00', width=3))
         self.data = []
         self.w = QtGui.QWidget()
         self.w.setStyleSheet("background: #191919;color: #DDDDDD; color: white;")
