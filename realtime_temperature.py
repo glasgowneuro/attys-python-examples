@@ -21,7 +21,8 @@ app = QtGui.QApplication(sys.argv)
 ch1 = c.AttysComm.INDEX_Analogue_channel_1
 ch2 = c.AttysComm.INDEX_Analogue_channel_2
 
-# Offset of channel 1 (thermocouple)
+# Offset of channel 1 (thermocouple) in V
+# This is the voltage measures if short circuited.
 ch1Offset = 0.0006
 
 # signals to all threads in endless loops that we'd like to run these
@@ -30,6 +31,7 @@ running = True
 class QtTemperaturePlot:
 
     def __init__(self):
+        self.lock = threading.Lock()
         self.hot = 20
         self.cold = 20
         self.bufferlen = 1000
@@ -46,7 +48,10 @@ class QtTemperaturePlot:
         self.label.setStyleSheet("font-size:48px")
         self.temperatureThermo = QtGui.QLineEdit('20C')
         self.temperatureThermo.setStyleSheet("font-size:48px; color: yellow;")
+        self.temperatureThermo.setFixedSize(300,70)
+        self.temperatureThermo.setReadOnly(True);
         self.temperatureCold = QtGui.QLineEdit('20C')
+        self.temperatureCold.setReadOnly(True);
         self.mainlayout = QtGui.QGridLayout()
         self.mainlayout.addWidget(self.label,0,0)
         self.mainlayout.addWidget(self.temperatureThermo,1,0)
@@ -60,15 +65,19 @@ class QtTemperaturePlot:
         
     def update(self):
         self.temperatureThermo.setText(u"{:10.1f}\u00b0C".format(self.hot))
-        self.temperatureCold.setText(u"Cold junction = {:10.1f}\u00b0C".format(self.cold))
+        self.temperatureCold.setText(u"Cold junction = {:2.1f}\u00b0C".format(self.cold))
         self.data=self.data[-self.bufferlen:]
         if self.data:
+            self.lock.acquire()
             self.curve.setData(np.linspace(0,self.bufferlen/250,len(self.data)),np.hstack(self.data))
+            self.lock.release()
 
     def addData(self,hot,cold):
         self.hot = hot
         self.cold = cold
+        self.lock.acquire()
         self.data.append(hot)
+        self.lock.release()
 
 
 def getDataThread(qtTemperaturePlot):
@@ -104,10 +113,10 @@ t.start()
 # showing all the windows
 app.exec_()
 
-c.quit()
-
 # Signal the Thread to stop
 running = False
+
+c.quit()
 
 # Waiting for the thread to stop
 t.join()
