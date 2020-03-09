@@ -50,7 +50,7 @@ class QtTemperaturePlot:
         self.data = []
         self.w = QtGui.QWidget()
         self.w.setStyleSheet("background: #191919;color: #DDDDDD; color: white; border: 0px;")
-        self.label = QtGui.QLabel('Temperature')
+        self.label = QtGui.QLabel()
         self.label.setStyleSheet("font-size:48px")
         self.temperatureThermo = QtGui.QLineEdit('20C')
         self.temperatureThermo.setStyleSheet("font-size:48px; color: yellow; background: black;")
@@ -58,6 +58,7 @@ class QtTemperaturePlot:
         self.temperatureThermo.setReadOnly(True);
         self.temperatureCold = QtGui.QLineEdit('20C')
         self.temperatureCold.setReadOnly(True);
+        self.temperatureCold.setStyleSheet("font-size:12px; color: #808080;")
         self.mainlayout = QtGui.QGridLayout()
         self.mainlayout.addWidget(self.label,0,0)
         self.mainlayout.addWidget(self.temperatureThermo,1,0)
