@@ -49,11 +49,11 @@ class QtTemperaturePlot:
         self.curve.setPen(pg.mkPen(color='#00FF00', width=3))
         self.data = []
         self.w = QtGui.QWidget()
-        self.w.setStyleSheet("background: #191919;color: #DDDDDD; color: white;")
+        self.w.setStyleSheet("background: #191919;color: #DDDDDD; color: white; border: 0px;")
         self.label = QtGui.QLabel('Temperature')
         self.label.setStyleSheet("font-size:48px")
         self.temperatureThermo = QtGui.QLineEdit('20C')
-        self.temperatureThermo.setStyleSheet("font-size:48px; color: yellow;")
+        self.temperatureThermo.setStyleSheet("font-size:48px; color: yellow; background: black;")
         self.temperatureThermo.setFixedSize(300,70)
         self.temperatureThermo.setReadOnly(True);
         self.temperatureCold = QtGui.QLineEdit('20C')
