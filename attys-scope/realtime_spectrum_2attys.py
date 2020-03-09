@@ -21,12 +21,24 @@ updateRate = 1000
 # Title for Channel1:
 titleChannel1 = "Kirsty's EEG"
 # From data Column:
-channel1 = 11
 
 # Title for Channel2:
 titleChannel2 = "Katie's EEG"
 # From data Column:
+
+channel1 = 11
 channel2 = 31
+
+def onclick(event):
+    global channel1
+    global channel2
+    if channel1 == 11:
+        channel2 = 11
+        channel1 = 31
+    else:
+        channel1 = 11
+        channel2 = 31
+    print("Swapped channels")
 
 # minimal frequency detectable in Hz
 minF = 1000.0 / updateRate
@@ -72,6 +84,7 @@ ax2.set_xlabel('Frequency/Hz')
 ax2.set_ylabel('Amplitude/V')
 ax1.set_title(titleChannel1)
 ax2.set_title(titleChannel2)
+cid = fig.canvas.mpl_connect('button_press_event', onclick)
 
 # empty axes
 e = np.array([1,2])
