@@ -18,6 +18,8 @@ updateRate = 1000
 
 # read from channels:
 
+swapped = False
+
 # Title for Channel1:
 titleChannel1 = "Kirsty's EEG"
 # From data Column:
@@ -30,15 +32,18 @@ channel1 = 11
 channel2 = 31
 
 def onclick(event):
-    global channel1
-    global channel2
-    if channel1 == 11:
-        channel2 = 11
-        channel1 = 31
+    global swapped
+    global ax1,x2
+    if swapped:
+        swapped = False
+        ax1.set_title(titleChannel1)
+        ax2.set_title(titleChannel2)
+        print("Orig channels")
     else:
-        channel1 = 11
-        channel2 = 31
-    print("Swapped channels")
+        ax2.set_title(titleChannel1)
+        ax1.set_title(titleChannel2)
+        print("Swapped channels")
+        swapped = True
 
 # minimal frequency detectable in Hz
 minF = 1000.0 / updateRate
@@ -111,12 +116,6 @@ def update(data):
     spectrum2[0] = 0
     line1.set_data(np.linspace(0,125,len(spectrum1)), spectrum1)
     line2.set_data(np.linspace(0,125,len(spectrum2)), spectrum2)
-    df1 = 125.0/float(len(spectrum1))
-    df2 = 125.0/float(len(spectrum2))
-    fmin = 40.0
-    fmax = 60.0
-#    spectrum1[int(df1*fmin):int(df1*fmax)] *= 0
-#    spectrum2[int(df2*fmin):int(df2*fmax)] *= 0
     ax1.set_ylim(0,spectrum1.max()*1.2)
     ax2.set_ylim(0,spectrum2.max()*1.2)
     ringbuffer = []
